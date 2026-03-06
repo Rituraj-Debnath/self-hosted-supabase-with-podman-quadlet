@@ -1,0 +1,26 @@
+[Unit]
+Description=Supabase GoTrue Auth Service
+After=network-online.target
+
+[Container]
+Image=docker.io/supabase/gotrue:v2.151.0
+ContainerName=supabase-auth
+Network=supabase.network
+EnvironmentFile=/etc/supabase/.env
+Environment=GOTRUE_API_HOST=0.0.0.0
+Environment=GOTRUE_API_PORT=9999
+Environment=GOTRUE_DB_DRIVER=postgres
+Environment=GOTRUE_JWT_EXP=3600
+Environment=GOTRUE_JWT_DEFAULT_GROUP_NAME=authenticated
+Environment=GOTRUE_MAILER_AUTOCONFIRM=false
+Environment=GOTRUE_MAILER_URLPATHS_INVITE=/auth/v1/verify
+Environment=GOTRUE_MAILER_URLPATHS_CONFIRMATION=/auth/v1/verify
+Environment=GOTRUE_MAILER_URLPATHS_RECOVERY=/auth/v1/verify
+Environment=GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE=/auth/v1/verify
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=multi-user.target
