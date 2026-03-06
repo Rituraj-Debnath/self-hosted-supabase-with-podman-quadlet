@@ -1,0 +1,24 @@
+[Unit]
+Description=Supabase Postgres Meta
+After=network-online.target
+
+[Container]
+Image=docker.io/supabase/postgres-meta:v0.84.2
+ContainerName=supabase-meta
+Network=supabase.network
+
+EnvironmentFile=/etc/supabase/.env
+
+Environment=PG_META_PORT=8080
+Environment=PG_META_DB_HOST=${POSTGRES_HOST}
+Environment=PG_META_DB_PORT=${POSTGRES_PORT}
+Environment=PG_META_DB_NAME=${POSTGRES_DB}
+Environment=PG_META_DB_USER=supabase_admin
+Environment=PG_META_DB_PASSWORD=${POSTGRES_PASSWORD}
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=multi-user.target
