@@ -1,0 +1,20 @@
+[Unit]
+Description=Supabase PostgREST
+After=network-online.target
+
+[Container]
+User=0
+Image=docker.io/postgrest/postgrest:v13.0.7
+ContainerName=supabase-rest
+Network=supabase.network
+EnvironmentFile=/etc/supabase/.env
+Environment=PGRST_DB_ANON_ROLE=anon
+Environment=PGRST_DB_USE_LEGACY_GUCS=false
+Environment=PGRST_APP_SETTINGS_JWT_EXP=3600
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=multi-user.target
