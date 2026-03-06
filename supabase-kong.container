@@ -1,0 +1,25 @@
+[Unit]
+Description=Supabase Kong API Gateway
+After=network-online.target
+
+[Container]
+Image=docker.io/kong:2.8.1
+ContainerName=supabase-kong
+Network=supabase.network
+PublishPort=8000:8000
+PublishPort=8443:8443
+EnvironmentFile=/etc/supabase/.env
+Environment=KONG_DATABASE=off
+Environment=KONG_DECLARATIVE_CONFIG=/var/lib/kong/kong.yml
+Environment=KONG_PLUGINS=request-transformer,cors,key-auth,acl
+Environment=KONG_DNS_ORDER=LAST,SRV,A,CNAME
+Environment=KONG_DNS_STALE_TTL=0
+
+Volume=/etc/supabase/volumes/kong/kong.yml:/var/lib/kong/kong.yml:ro,z
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=multi-user.target
